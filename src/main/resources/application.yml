@@ -1,0 +1,5 @@
+zillow:
+  demographics: "http://www.zillow.com/webservice/GetDemographics.htm?zws-id=X1-ZWz1a3j8v7by8b_64j9s&zip="
+
+weather:
+  zip: "http://api.wunderground.com/api/93ef617c6ad5f862/conditions/q/zip/"

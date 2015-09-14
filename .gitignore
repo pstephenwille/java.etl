@@ -9,4 +9,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+lib
 
+#   front end app
+node_modules
+dist
