@@ -19,12 +19,11 @@ public class ZillowService {
 
     @Nullable
     public ZillowDemographics getZillowData(@Nonnull String zip) throws RestClientException {
-        System.out.println("real zillow:: under test "+ zip);
         try {
             return template.getForObject(zillowUrl + zip, ZillowDemographics.class);
 
         } catch (RestClientException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
 
             return null;
         }

@@ -3,3 +3,6 @@ zillow:
 
 weather:
   zip: "http://api.wunderground.com/api/93ef617c6ad5f862/conditions/q/zip/"
+
+server:
+  port: 8090

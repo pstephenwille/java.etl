@@ -1,32 +1,32 @@
 'use strict';
 
-var watchify = require('watchify');
-var browserify = require('browserify');
-var gulp = require('gulp');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var gutil = require('gulp-util');
-var sourcemaps = require('gulp-sourcemaps');
+
 var assign = require('lodash.assign');
-
-
-//var concat = require('gulp-concat');
-var react = require('gulp-react');
-//var htmlReplace = require('gulp-html-replace');
-
+var babelify = require("babelify");
+var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
+var fs = require("fs");
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var source = require('vinyl-source-stream');
+var sourcemaps = require('gulp-sourcemaps');
+var watchify = require('watchify');
+var glob = require('glob');
 
 
 var customOpts = {
-  entries:['./scripts/main.jsx'],
+  entries:glob.sync('./scripts/**/*.jsx'),
   debug:true
 };
+
 
 var opts = assign({}, watchify.ags, customOpts);
 var b = watchify(browserify(opts));
 
+
 // add transformations here
 // i.e. b.transform(coffeeify);
-//b.transform(react());
+b.transform(babelify);
 
 
 gulp.task('dev', bundle); // so you can run `gulp js` to build the file
@@ -48,6 +48,3 @@ function bundle() {
 }
 
 
-gulp.task('woot', function(){
-  console.log("gulp woot");
-});

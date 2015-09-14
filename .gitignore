@@ -11,6 +11,8 @@ buildNumber.properties
 .mvn/timing.properties
 lib
 
-#   front end app
+#   FRONTEND
+node_modules
+dist#   front end app
 node_modules
 dist
