@@ -36,38 +36,53 @@ public class LocationManger {
 
 
     @Nonnull
-    public String getLocation(@Nonnull String zip) {
+    public Location getLocation(@Nonnull String zip) {
 
-        final Location mongoLocation = locationRepo.findByZip(zip);
+        final Location cachedLocation = getCachedLocation(zip);
+        final Location freshLocation;
 
-        if (mongoLocation == null) {
+        if (cachedLocation == null) {
+            freshLocation = getFreshLocation(zip);
 
-            final Weather weather = weatherService.getWeatherData(zip);
-            final ZillowDemographics zillowDemographics = zillowService.getZillowData(zip);
+            cacheFreshDataInMongo(freshLocation);
 
-            if (weather == null || zillowDemographics == null) {
-                return "unable to get data";
-            }
+            return freshLocation;
 
-
-            final Location location = locationBuilder.getLocation(weather, zillowDemographics);
-
-            Thread asyncMongoWrite = new Thread(() -> {
-                try {
-                    locationRepo.save(location);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-            asyncMongoWrite.start();
-
-
-            return location.toString();
+        } else {
+            return cachedLocation;
         }
-
-        return mongoLocation.toString();
     }
+
+
+    private Location getCachedLocation(@Nonnull String zip) {
+        return locationRepo.findByZip(zip);
+    }
+
+    private Location getFreshLocation(@Nonnull String zip) {
+        return locationBuilder.getLocation(getFreshWeatherData(zip), getFreshZillowData(zip));
+    }
+
+    private Weather getFreshWeatherData(@Nonnull String zip) {
+        return weatherService.getWeatherData(zip);
+    }
+
+    private ZillowDemographics getFreshZillowData(@Nonnull String zip) {
+        return zillowService.getZillowData(zip);
+    }
+
+    private void cacheFreshDataInMongo(@Nonnull Location freshLocation) {
+        Thread asyncMongoWrite = new Thread(() -> {
+            try {
+                Thread.sleep(3);
+                locationRepo.save(freshLocation);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        asyncMongoWrite.start();
+    }
+
 
 }
 
