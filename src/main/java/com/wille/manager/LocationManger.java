@@ -8,11 +8,9 @@ import com.wille.data.service.weather.model.Weather;
 import com.wille.data.service.zillow.ZillowService;
 import com.wille.data.service.zillow.model.ZillowDemographics;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.Future;
 
 /**
  * creates LocationModel objects
@@ -54,29 +52,21 @@ public class LocationManger {
 
             final Location location = locationBuilder.getLocation(weather, zillowDemographics);
 
-            Thread asyncMongoWrite = new Thread(()->{
+            Thread asyncMongoWrite = new Thread(() -> {
                 try {
-                    asyncMongoWrite(locationRepo, location);
-                } catch (InterruptedException e) {
+                    locationRepo.save(location);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
+
+            asyncMongoWrite.start();
+
 
             return location.toString();
         }
 
         return mongoLocation.toString();
-    }
-
-    public Future<Boolean> asyncMongoWrite(LocationRepo locationRepo, Location location) throws InterruptedException {
-        try {
-            Thread.sleep(3000L);
-            locationRepo.save(location);
-            return new AsyncResult<Boolean>(true);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return new AsyncResult<Boolean>(false);
-        }
     }
 
 }
