@@ -10,8 +10,6 @@ webproxy:
 
 api:
   build: .
-  ports:
-    - "8090:8090"
   links:
     - mongodb:mongo
 
