@@ -13,6 +13,4 @@ lib
 
 #   FRONTEND
 node_modules
-dist#   front end app
-node_modules
 dist

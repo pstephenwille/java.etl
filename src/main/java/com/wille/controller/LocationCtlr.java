@@ -6,10 +6,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/location")
+@RestController
 @Log4j2
 public class LocationCtlr {
 
@@ -26,10 +27,19 @@ public class LocationCtlr {
     */
 
 
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/api/location", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Location getLocation(@RequestParam(value = "zip", defaultValue = "98109") String zip) {
         /* error check for non null zip */
-log.warn("location controller::getlcotaion.................");
+        log.warn("\n\n..............location controller::getlocation.................\n\n");
         return manager.getLocation(zip);
     }
+
+    @RequestMapping(value="/api/woot", method = RequestMethod.GET)
+    public String woot() {
+        /* error check for non null zip */
+        log.warn("\n\n..............woot.................\n\n");
+        return "woot woot";
+    }
+
 }
+/**/

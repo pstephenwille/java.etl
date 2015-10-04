@@ -1,0 +1,23 @@
+webproxy:
+  image: nginx
+  ports:
+    - "8080:8080"
+  volumes:
+    - ./docker.nginx/conf.d:/etc/nginx/conf.d
+    - ./src/main/webapp:/usr/share/nginx/html
+  links:
+    - api:api
+
+api:
+  build: .
+  ports:
+    - "8090:8090"
+  links:
+    - mongodb:mongo
+
+mongodb:
+  image: mongo
+  volumes:
+    - /data/db
+
+
