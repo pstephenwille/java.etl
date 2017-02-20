@@ -16,8 +16,10 @@ public class ZillowServiceTest {
 
     @Tested
     ZillowService testing;
+
     @Injectable
     RestTemplate template;
+
     @Injectable
     String zillowUrl = "zillowUrl";
 
